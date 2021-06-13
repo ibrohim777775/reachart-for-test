@@ -105,7 +105,11 @@ function App() {
             <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="red" stopOpacity={0.8} />
+            <stop
+              offset={`${persentageForAmt}%`}
+              stopColor="red"
+              stopOpacity={0.7}
+            />
             <stop
               offset={`${persentageForAmt}%`}
               stopColor="#f9e75e"
@@ -139,7 +143,7 @@ function App() {
           y={data[0].oneuv}
           x="page A"
           label="Z-Score > 1  in uv"
-          strokeOpacity={1.4}
+          strokeOpacity={0.5}
           stroke="red"
           strokeWidth={2}
           strokeDasharray="3 3"
@@ -148,7 +152,7 @@ function App() {
           y={data[0].onepv}
           x="page A"
           label="Z-Score > 1  in pv"
-          strokeOpacity={1.6}
+          strokeOpacity={0.5}
           stroke="red"
           strokeWidth={2}
           strokeDasharray="3 3"
@@ -157,7 +161,7 @@ function App() {
           y={data[0].oneamt}
           x="page A"
           label="Z-Score > 1"
-          strokeOpacity={1.4}
+          strokeOpacity={0.5}
           stroke="red"
           strokeWidth={2}
           strokeDasharray="3 3"
