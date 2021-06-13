@@ -19,6 +19,7 @@ function App() {
   const data = [...array];
   const [persentageForUv, setPersentageForUv] = useState(null);
   const [persentageForPv, setPersentageForPv] = useState(null);
+  const [persentageForAmt, setPersentageForAmt] = useState(null);
 
   const newArr = (prop) => {
     let sum = 0;
@@ -55,10 +56,11 @@ function App() {
   useEffect(() => {
     newArr("uv");
     newArr("pv");
+    newArr("amt");
     setPersentageForUv(100 - (data[0].oneuv * 100) / getMax("uv"));
     setPersentageForPv(100 - (data[0].onepv * 100) / getMax("pv"));
+    setPersentageForAmt(100 - (data[0].onepv * 100) / getMax("amt"));
   }, []);
-  // newArr("amt");
 
   // console.log(data);
   // console.log(persentageForPv);
@@ -78,7 +80,6 @@ function App() {
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="red" stopOpacity={0.8} />
-
             <stop
               offset={`${persentageForUv}%`}
               stopColor="#8884d8"
@@ -94,6 +95,15 @@ function App() {
               stopOpacity={0.6}
             />
             <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+            <stop
+              offset={`${persentageForAmt}%`}
+              stopColor="#f9e75e"
+              stopOpacity={0.6}
+            />
+            <stop offset="95%" stopColor="#f9e75e" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid opacity={0.1} vertical={false} />
@@ -135,14 +145,32 @@ function App() {
           strokeWidth={2}
           strokeDasharray="3 3"
         />
+        <ReferenceLine
+          y={data[0].oneamt}
+          x="page A"
+          label="Z-Score > 1"
+          strokeOpacity={1.4}
+          stroke="red"
+          strokeWidth={2}
+          strokeDasharray="3 3"
+        />
         <Area
           type="monotone"
           dataKey="uv"
           stroke="#8884d8"
           dot={{ fill: "#8884d8", r: 5 }}
           activeDot={{ r: 8 }}
-          fillOpacity={1}
+          fillOpacity={0.6}
           fill="url(#colorUv)"
+        />
+        <Area
+          type="monotone"
+          dataKey="amt"
+          stroke="#f9e75e"
+          dot={{ fill: "#f9e75e", r: 5 }}
+          activeDot={{ r: 8 }}
+          fillOpacity={0.6}
+          fill="url(#colorAmt)"
         />
         <Area
           type="monotone"
@@ -150,7 +178,7 @@ function App() {
           stroke="#82ca9d"
           dot={{ fill: "#82ca9d", r: 5 }}
           activeDot={{ r: 8 }}
-          fillOpacity={1}
+          fillOpacity={0.6}
           fill="url(#colorPv)"
         />
         {/* <Area
