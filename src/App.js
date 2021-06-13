@@ -193,66 +193,6 @@ function App() {
           fillOpacity={0.6}
           fill="url(#colorPv)"
         />
-        {/* <Area
-          type="monotone"
-          dataKey="oneuv" // значения когда zScore = 1
-          stroke="red"
-          activeDot={{ r: 8 }}
-          fillOpacity={0.1}
-          fill="url(#colorUv)"
-        /> */}
-        {/* <Area
-          type="monotone"
-          dataKey="onepv" // значения когда zScore = 1
-          stroke="black"
-          activeDot={{ r: 8 }}
-          fillOpacity={0.1}
-          fill="url(#colorPv)"
-        /> */}
-        {/* <Area
-          type="monotone"
-          dataKey="zScoreuv"
-          stroke="black"
-          activeDot={{ r: 8 }}
-          fillOpacity={0.1}
-          fill="url(#colorUv)"
-        /> */}
-        {/* <Area 
-        type="monotone" 
-        dataKey="amt" 
-        stroke="red" 
-        activeDot={{ r: 8 }} 
-      /> */}
-        {/* <Area
-        type="monotone"
-        dataKey="zScorepv"
-        stroke="#8884d8"
-        activeDot={{ r: 8 }}
-      /> */}
-        {/* <Area
-        type="monotone"
-        dataKey="zScoreamt"
-        stroke="red"
-        activeDot={{ r: 8 }}
-      /> */}
-        {/* <Area 
-        type="monotone" 
-        dataKey="zScoreuv" 
-        stroke="green" 
-        activeDot={{ r: 8 }} 
-      />  */}
-        {/* <Area
-          type="monotone"
-          dataKey="oneuv"
-          stroke="green"
-          activeDot={{ r: 8 }}
-        />
-        <Area
-          type="monotone"
-          dataKey="onepv"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
-        /> */}
       </AreaChart>
     </ResponsiveContainer>
   );
