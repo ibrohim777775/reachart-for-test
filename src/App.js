@@ -65,21 +65,25 @@ function App() {
   // console.log(data);
   // console.log(persentageForPv);
   return (
-    <ResponsiveContainer width="100%" aspect={3}>
+    <ResponsiveContainer width="100%" height="100%" aspect={3}>
       <AreaChart
         width={500}
-        height={300}
+        height={500}
         data={data}
         margin={{
           top: 50,
-          right: 50,
-          left: 40,
+          right: 20,
+          left: 10,
           bottom: 5,
         }}
       >
         <defs>
           <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+            <stop
+              offset={`${persentageForUv}%`}
+              stopColor="red"
+              stopOpacity={0.7}
+            />
             <stop
               offset={`${persentageForUv}%`}
               stopColor="#8884d8"
@@ -88,7 +92,11 @@ function App() {
             <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+            <stop
+              offset={`${persentageForPv}%`}
+              stopColor="red"
+              stopOpacity={0.7}
+            />
             <stop
               offset={`${persentageForPv}%`}
               stopColor="#82ca9d"
@@ -97,7 +105,7 @@ function App() {
             <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
           </linearGradient>
           <linearGradient id="colorAmt" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+            <stop offset="5%" stopColor="red" stopOpacity={0.8} />
             <stop
               offset={`${persentageForAmt}%`}
               stopColor="#f9e75e"
@@ -130,7 +138,7 @@ function App() {
         <ReferenceLine
           y={data[0].oneuv}
           x="page A"
-          label="Z-Score > 1"
+          label="Z-Score > 1  in uv"
           strokeOpacity={1.4}
           stroke="red"
           strokeWidth={2}
@@ -139,13 +147,13 @@ function App() {
         <ReferenceLine
           y={data[0].onepv}
           x="page A"
-          label="Z-Score > 1"
+          label="Z-Score > 1  in pv"
           strokeOpacity={1.6}
           stroke="red"
           strokeWidth={2}
           strokeDasharray="3 3"
         />
-        <ReferenceLine
+        {/* <ReferenceLine
           y={data[0].oneamt}
           x="page A"
           label="Z-Score > 1"
@@ -153,7 +161,7 @@ function App() {
           stroke="red"
           strokeWidth={2}
           strokeDasharray="3 3"
-        />
+        /> */}
         <Area
           type="monotone"
           dataKey="uv"
@@ -163,7 +171,7 @@ function App() {
           fillOpacity={0.6}
           fill="url(#colorUv)"
         />
-        <Area
+        {/* <Area
           type="monotone"
           dataKey="amt"
           stroke="#f9e75e"
@@ -171,7 +179,7 @@ function App() {
           activeDot={{ r: 8 }}
           fillOpacity={0.6}
           fill="url(#colorAmt)"
-        />
+        /> */}
         <Area
           type="monotone"
           dataKey="pv"
