@@ -1,96 +1,25 @@
-// import data from "./db";
+import array from "./db";
 import { useEffect, useState } from "react";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 
 import "./App.css";
 
 function App() {
   // console.log(data);
-  const [newData, setNewData] = useState([]);
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-      oneuv: 3509.23,
-      zScoreuv: 1.69,
-      onepv: 6819.94,
-      zScorepv: -0.78,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-      oneuv: 3509.23,
-      zScoreuv: 0.29,
-      onepv: 6819.94,
-      zScorepv: -1.19,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-      oneuv: 3509.23,
-      zScoreuv: -1.11,
-      onepv: 6819.94,
-      zScorepv: 2.2,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-      oneuv: 3509.23,
-      zScoreuv: -0.02,
-      onepv: 6819.94,
-      zScorepv: -0.18,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-      oneuv: 3509.23,
-      zScoreuv: -1.26,
-      onepv: 6819.94,
-      zScorepv: 0.18,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-      oneuv: 3509.23,
-      zScoreuv: -0.56,
-      onepv: 6819.94,
-      zScorepv: -0.22,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-      oneuv: 3509.23,
-      zScoreuv: 0.97,
-      onepv: 6819.94,
-      zScorepv: -0.02,
-    },
-  ];
+  const data = [...array];
+  const [persentageForUv, setPersentageForUv] = useState(null);
+  const [persentageForPv, setPersentageForPv] = useState(null);
 
-  const arr = [...data];
-  console.log(arr);
   const newArr = (prop) => {
     let sum = 0;
     data.forEach((item) => (sum += item[prop]));
@@ -107,88 +36,184 @@ function App() {
       zScore =
         Math.round(((item[prop] - avarage) / variance + Number.EPSILON) * 100) /
         100; // Z-Score
-      console.log(avarage, "ortacha qiymat");
-      console.log(variance, "otkloneniya");
+
       item["one" + prop] =
         Math.round((variance + avarage + Number.EPSILON) * 100) / 100;
-      item["zScore" + prop] = zScore;
-      // console.log(item.name, item[prop], " da z-score", zScore, " boladi");
-      console.log(item);
+      item["zScore" + prop] = zScore; // значения когда zScore = 1
+      // console.log(item);
     });
   };
+  const getMax = (prop) => {
+    const dataMax = Math.max(...data.map((i) => i[prop]));
+
+    if (dataMax <= 0) {
+      return 0;
+    }
+
+    return dataMax;
+  };
   useEffect(() => {
-    // newArr("uv");
-    // newArr("pv");
+    newArr("uv");
+    newArr("pv");
+    setPersentageForUv(100 - (data[0].oneuv * 100) / getMax("uv"));
+    setPersentageForPv(100 - (data[0].onepv * 100) / getMax("pv"));
   }, []);
   // newArr("amt");
-  console.log(data);
+
+  // console.log(data);
+  // console.log(persentageForPv);
   return (
     <ResponsiveContainer width="100%" aspect={3}>
-      <LineChart
+      <AreaChart
         width={500}
         height={300}
         data={data}
         margin={{
-          top: 5,
-          right: 30,
-          left: 20,
+          top: 50,
+          right: 50,
+          left: 40,
           bottom: 5,
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line
-          type="monotone"
-          dataKey="pv"
-          stroke="#8884d8"
-          activeDot={{ r: 8 }}
+        <defs>
+          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+
+            <stop
+              offset={`${persentageForUv}%`}
+              stopColor="#8884d8"
+              stopOpacity={0.6}
+            />
+            <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="red" stopOpacity={0.8} />
+            <stop
+              offset={`${persentageForPv}%`}
+              stopColor="#82ca9d"
+              stopOpacity={0.6}
+            />
+            <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid opacity={0.1} vertical={false} />
+        <XAxis
+          dataKey="name"
+          tick={{ fill: "#fff" }}
+          axisLine={false}
+          tickLine={false}
         />
-        <Line
+        <YAxis
+          tick={{ fill: "#fff" }}
+          axisLine={false}
+          tickLine={false}
+          tickCount={8}
+        />
+        <Tooltip
+          contentStyle={{ backgroundColor: "#1c2e52", color: "#fff" }}
+          cursor={false}
+        />
+        {/* <Tooltip /> */}
+        {/* <CartesianGrid strokeDasharray="3 3" /> */}
+
+        <Legend />
+        <ReferenceLine
+          y={data[0].oneuv}
+          x="page A"
+          label="Z-Score > 1"
+          strokeOpacity={1.4}
+          stroke="red"
+          strokeWidth={2}
+          strokeDasharray="3 3"
+        />
+        <ReferenceLine
+          y={data[0].onepv}
+          x="page A"
+          label="Z-Score > 1"
+          strokeOpacity={1.6}
+          stroke="red"
+          strokeWidth={2}
+          strokeDasharray="3 3"
+        />
+        <Area
           type="monotone"
           dataKey="uv"
-          stroke="green"
+          stroke="#8884d8"
+          dot={{ fill: "#8884d8", r: 5 }}
           activeDot={{ r: 8 }}
+          fillOpacity={1}
+          fill="url(#colorUv)"
         />
-        {/* <Line 
+        <Area
+          type="monotone"
+          dataKey="pv"
+          stroke="#82ca9d"
+          dot={{ fill: "#82ca9d", r: 5 }}
+          activeDot={{ r: 8 }}
+          fillOpacity={1}
+          fill="url(#colorPv)"
+        />
+        {/* <Area
+          type="monotone"
+          dataKey="oneuv" // значения когда zScore = 1
+          stroke="red"
+          activeDot={{ r: 8 }}
+          fillOpacity={0.1}
+          fill="url(#colorUv)"
+        /> */}
+        {/* <Area
+          type="monotone"
+          dataKey="onepv" // значения когда zScore = 1
+          stroke="black"
+          activeDot={{ r: 8 }}
+          fillOpacity={0.1}
+          fill="url(#colorPv)"
+        /> */}
+        {/* <Area
+          type="monotone"
+          dataKey="zScoreuv"
+          stroke="black"
+          activeDot={{ r: 8 }}
+          fillOpacity={0.1}
+          fill="url(#colorUv)"
+        /> */}
+        {/* <Area 
         type="monotone" 
         dataKey="amt" 
         stroke="red" 
         activeDot={{ r: 8 }} 
       /> */}
-        {/* <Line
+        {/* <Area
         type="monotone"
         dataKey="zScorepv"
         stroke="#8884d8"
         activeDot={{ r: 8 }}
       /> */}
-        {/* <Line
+        {/* <Area
         type="monotone"
         dataKey="zScoreamt"
         stroke="red"
         activeDot={{ r: 8 }}
       /> */}
-        {/* <Line 
+        {/* <Area 
         type="monotone" 
         dataKey="zScoreuv" 
         stroke="green" 
         activeDot={{ r: 8 }} 
       />  */}
-        <Line
+        {/* <Area
           type="monotone"
           dataKey="oneuv"
           stroke="green"
           activeDot={{ r: 8 }}
         />
-        <Line
+        <Area
           type="monotone"
           dataKey="onepv"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
-        />
-      </LineChart>
+        /> */}
+      </AreaChart>
     </ResponsiveContainer>
   );
 }
